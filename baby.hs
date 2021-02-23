@@ -65,3 +65,31 @@ tell (x:[]) = "The list has one element." ++ show x
 tell (x:y:[]) = "The list has two elements." ++ show x ++ " and " ++ show y
 tell all@(x:y:_) = "The list is long.(length=" ++  show (length all) ++ ";first=" ++ show x ++ ")"
 
+-- 関数 (ガード)
+bmiTell :: Double -> Double -> String
+bmiTell weight height
+    | bmi <= skinny = "You're underweight you emo, you!"
+    | bmi <= nomal = "You're supposedly normal.\\ PFFFT, I bet you're ugly!"
+    | bmi <= fat = "You're fat! Lose some weight, fatty!"
+    | otherwise   = "You're a whale, congratulations!"
+    where bmi = weight / height ^ 2
+          (skinny, nomal, fat) = (18.5, 25.0, 30.0)
+
+-- 関数 (where関数定義)
+calcBmi :: [(Double, Double)] -> [Double]
+calcBmi xs = [bmi w h | (w, h) <- xs]
+    where bmi weight height = weight / height ^ 2
+
+-- let (ローカルスコープ定義)
+main = do
+    -- ローカルスコープ関数
+    print [let square x = x * x in (square 5, square 3, square 2)]
+    -- 「;」で区切れる
+    print (let a = 1; b = 2; c = 3; in a * b * c)
+
+-- case
+describeList :: [a] -> String
+describeList ls = "The list is "
+                  ++ case ls of [] -> "empty."
+                                [x] -> "a singleton list."
+                                xs -> "a longer list."
